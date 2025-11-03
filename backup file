@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        BACKUP_DIR = "/var/backups/jenkins"
-        BACKUP_FILE = "jenkins-backup-${new Date().format('yyyyMMdd-HHmmss')}.tar.gz"
-        JENKINS_HOME_DIR = "/var/lib/jenkins"
-    }
-
     stages {
         stage('Backup Jenkins Home') {
             steps {
