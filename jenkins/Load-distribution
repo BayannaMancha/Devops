@@ -1,1 +1,88 @@
+pipeline {
+    agent none  // No default agent; each stage defines its own
+
+    stages {
+        // ---------- STAGES ON NODE1 ----------
+        stage('Build') {
+            agent { label 'Node-1' }
+            steps {
+                echo "Running Build on NODE1"
+                sh 'hostname'
+            }
+        }
+
+        stage('Unit Test') {
+            agent { label 'Node-1' }
+            steps {
+                echo "Running Unit Tests on NODE1"
+                sh 'echo "Unit tests executed successfully"'
+            }
+        }
+
+        stage('Static Code Analysis') {
+            agent { label 'Node-1' }
+            steps {
+                echo "Running Code Analysis on NODE1"
+                sh 'echo "Static analysis completed"'
+            }
+        }
+
+        stage('Code Quality Gate') {
+            agent { label 'Node-1' }
+            steps {
+                echo "Verifying Code Quality Gate on NODE1"
+                sh 'echo "Quality gate passed"'
+            }
+        }
+
+        stage('Artifact Packaging') {
+            agent { label 'Node-1' }
+            steps {
+                echo "Packaging build artifacts on NODE1"
+                sh 'echo "Artifacts packaged successfully"'
+            }
+        }
+
+        // ---------- STAGES ON NODE2 ----------
+        stage('Integration Test') {
+            agent { label 'node-2' }
+            steps {
+                echo "Running Integration Tests on NODE2"
+                sh 'echo "Integration tests passed"'
+            }
+        }
+
+        stage('Deploy to QA') {
+            agent { label 'node-2' }
+            steps {
+                echo "Deploying to QA environment on NODE2"
+                sh 'echo "Deployed to QA successfully"'
+            }
+        }
+
+        stage('Functional Test') {
+            agent { label 'node-2' }
+            steps {
+                echo "Running Functional Tests on NODE2"
+                sh 'echo "Functional tests passed"'
+            }
+        }
+
+        stage('Security Scan') {
+            agent { label 'node-2' }
+            steps {
+                echo "Running Security Scans on NODE2"
+                sh 'echo "No vulnerabilities found"'
+            }
+        }
+
+        stage('Deploy to Production') {
+            agent { label 'node-2' }
+            steps {
+                echo "Deploying application to Production from NODE2"
+                sh 'echo "Production deployment completed"'
+            }
+        }
+    }
+}
 
