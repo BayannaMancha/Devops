@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+ 
+    stages {
+        stage('Get Master Server Details') {
+            steps {
+                script {
+                    echo "=== Jenkins Master (Controller) Server Details ==="
+ 
+                    // Get Jenkins instance
+                    def jenkins = Jenkins.instance
+ 
+                    // Master node (controller)
+                    def master = jenkins.getComputer('')
+ 
+                    echo "Name: ${master.name ?: 'master'}"
+                    echo "Host Name: ${master.hostName}"
+                    echo "Is Online: ${master.online}"
+                    echo "Number of Executors: ${master.numExecutors}"
+                    echo "Assigned Labels: ${jenkins.getSelfLabel().name}"
+                    echo "Jenkins Version: ${jenkins.version}"
+                    echo "Root URL: ${jenkins.rootUrl ?: 'Not configured'}"
+ 
+                    echo "=== End of Master Details ==="
+                }
+            }
+        }
+    }
+}
