@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('User Input') {
+            steps {
+                script {
+                    // Prompt user for input
+                    def userInput = input(
+                        id: 'userInput', message: 'Please provide build version number:',
+                        parameters: [
+                            string(defaultValue: '', description: 'Enter version number (e.g. 1.0.0)', name: 'VERSION')
+                        ]
+                    )
+
+                    // Validate input
+                    if (!userInput.matches(/^\d+\.\d+\.\d+$/)) {
+                        error "❌ Invalid version format! Please use format X.Y.Z (e.g., 1.0.0)"
+                    } else {
+                        echo "✅ Version format is valid: ${userInput}"
+                        env.VERSION = userInput
+                    }
+                }
+            }
+        }
+
+        stage('Build') {
+            when { expression { return env.VERSION != null } }
+            steps {
+                echo "Building project version ${env.VERSION}"
+                sh "echo 'Simulating build for version ${env.VERSION}'"
+            }
+        }
+    }
+}
